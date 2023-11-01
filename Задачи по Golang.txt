@@ -1,0 +1,887 @@
+========================
+===   Слайсы, Мапы   ===
+========================
+
+++++++++++
+ Задача 1
+++++++++++
+Что выведет код?
+
+func main() {
+	v := []int{3, 4, 1, 2, 5}
+	ap(v)
+	sr(v)
+	fmt.Println(v)
+}
+
+func ap(arr []int) {
+	arr = append(arr, 10)
+}
+
+func sr(arr []int) {
+	sort.Ints(arr)
+}
+
+
+++++++++++
+ Задача 2
+++++++++++
+1. Что выведет код?
+
+
+var foo []int
+var bar []int
+
+foo = append(foo, 1)
+foo = append(foo, 2)
+foo = append(foo, 3)
+bar = append(foo, 4)
+foo = append(foo, 5)
+
+fmt.Println(foo, bar)
+
+
+++++++++++
+ Задача 3
+++++++++++
+1. Что выведется?
+
+package main
+import "fmt"
+func main() {
+  c := []string{"A", "B", "D", "E"}
+  b := c[1:2]
+  b = append(b, "TT")
+  fmt.Println(c)
+  fmt.Println(b)
+}
+
+++++++++++
+ Задача 4
+++++++++++
+1. Что выведет код?
+
+func main() {
+  var m map[string]int
+  for _, word := range []string{"hello", "world", "from", "the",
+    "best", "language", "in", "the", "world"} {
+    m[word]++
+  }
+  for k, v := range m {
+    fmt.Println(k, v)
+  }
+}
+
+++++++++++
+ Задача 5
+++++++++++
+1. Что будет в результате выполнения?
+
+mutate := func(a []int) {
+  a[0] = 0
+  a = append(a, 1)
+  fmt.Println(a)
+}
+a := []int{1, 2, 3, 4}
+mutate(a)
+fmt.Println(a)
+
+++++++++++
+ Задача 6
+++++++++++
+1. Что выведется?
+2. Зная обо всех таких нюансах, которые могут возникнуть, какие есть рекомендации?
+
+# Вариант 1
+-----------
+func mod(a []int) {
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := []int{1, 2, 3, 5}
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 2
+-----------
+func mod(a []int) {
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := make([]int, 4, 8)
+  sl[0] = 1
+  sl[1] = 2
+  sl[2] = 3
+  sl[3] = 5
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 3
+-----------
+func mod(a []int) {
+  a = append(a, 125)
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := make([]int, 4, 8)
+  sl[0] = 1
+  sl[1] = 2
+  sl[2] = 3
+  sl[3] = 5
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 4
+-----------
+func mod(a []int) {
+  a = append(a, 125)
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := []int{1, 2, 3, 4, 5}
+  mod(sl)
+  fmt.Println(sl)
+}
+
+++++++++++
+ Задача 7
+++++++++++
+1. Что будет содержать s после инициализации?
+2. Что произойдет в println для слайса и для мапы?
+
+func a(s []int) {
+    s = append(s, 37)
+}
+
+func b(m map[int]int) {
+    m[3] = 33
+}
+
+func main() {
+    s := make([]int, 3, 8)
+    m := make(map[int]int, 8)
+
+    // add to slice
+    a(s)
+    println(s[3]) //?
+
+    // add to map
+    b(m)
+    println(m[3]) //?
+}
+
+++++++++++
+ Задача 8
+++++++++++
+1. Расскажи подробно что происходит
+
+# Вариант 1
+-----------
+package main
+
+import "fmt"
+
+func main() {
+    a := []int{1,2}
+    a = append(a, 3)
+    b := append(a, 4)
+    c := append(a, 5)
+
+    fmt.Println(b)
+    fmt.Println(c)
+}
+
+# Вариант 2
+-----------
+package main
+
+import "fmt"
+
+func main() {
+    a := []int{1,2}
+    a = append(a, 3)
+    a = append(a, 7)
+    b := append(a, 4)
+    c := append(a, 5)
+
+    fmt.Println(b)
+    fmt.Println(c)
+}
+
+
+============================
+====    Многопоточка    ====
+============================
+
+++++++++++
+ Задача 1
+++++++++++
+Что выведет код? Исправить все проблемы
+
+func main() {
+	ch := make(chan int)
+	wg := &sync.WaitGroup{}
+	wg.Add(3)
+	for i := 0; i < 3; i++ {
+		go func(v int) {
+			defer wg.Done()
+			ch <- v * v
+		}(i)
+	}
+	wg.Wait()
+	var sum int
+	for v := range ch {
+		sum += v
+	}
+	fmt.Printf("result: %d\n", sum)
+}
+
+
+++++++++++
+ Задача 2
+++++++++++
+Что выведет код? Должны выводится все значения
+
+func main() {
+	a := 5000
+	for i := 0; i < a; i++ {
+		go fmt.Println(i)
+	}
+}
+
+
+++++++++++
+ Задача 3
+++++++++++
+Будет ошибка что все горутины заблокированы. Какие горутины будут заблокированы? И почему?
+
+package main
+import "fmt"
+func main() {
+  ch := make(chan int)
+  ch <- 1
+  go func() {
+    fmt.Println(<-ch)
+  }()
+}
+
+++++++++++
+ Задача 4
+++++++++++
+1. Как это работает, что не так, что поправить?
+
+func main() {
+  ch := make(chan bool)
+  ch <- true
+  go func() {
+    <-ch
+  }()
+  ch <-true
+}
+
+++++++++++
+ Задача 5
+++++++++++
+1. Как будет работать код?
+2. Как сделать так, чтобы выводился только первый ch?
+
+func main() {
+        ch := make(chan bool)
+        ch2 := make(chan bool)
+        ch3 := make(chan bool)
+        go func() {
+                ch <- true
+        }()
+        go func() {
+                ch2 <- true
+        }()
+        go func() {
+                ch3 <- true
+        }()
+
+        select {
+        case <-ch:
+                fmt.Printf("val from ch")
+        case <-ch2:
+                fmt.Printf("val from ch2")
+        case <-ch3:
+                fmt.Printf("val from ch3")
+        }
+}
+
+++++++++++
+ Задача 6
+++++++++++
+1. Что выведет код и как исправить?
+
+var globalMap = map[string][]int{"test": make([]int, 0), "test2": make([]int, 0), "test3": make([]int, 0)}
+var a = 0
+ 
+func main() {
+    wg := sync.WaitGroup{}
+    wg.Add(3)
+    go func() {
+        wg.Done()
+        a=10
+        globalMap["test"] = append(globalMap["test"], a)
+         
+    }()
+    go func() {
+        wg.Done()
+        a=11
+        globalMap["test2"] = append(globalMap["test2"], a)
+    }()
+    go func() {
+        wg.Done()
+        a=12
+        globalMap["test3"] = append(globalMap["test3"], a)
+    }()
+    wg.Wait()
+    fmt.Printf("%v", globalMap)
+    fmt.Printf("%d", a)
+}
+
+++++++++++
+ Задача 7
+++++++++++
+
+type Result struct{}
+
+type SearchFunc func(ctx context.Context, query string) (Result, error)
+
+func MultiSearch(ctx context.Context, query string, sfs []SearchFunc) (Result, error) {
+    // Нужно реализовать функцию, которая выполняет поиск query во всех переданных SearchFunc
+    // Когда получаем первый успешный результат - отдаем его сразу. Если все SearchFunc отработали
+    // с ошибкой - отдаем последнюю полученную ошибку
+}
+
+++++++++++
+ Задача 8
+++++++++++
+1. Что выведется и как исправить?
+
+func main() {
+  var counter int
+  for i := 0; i < 1000; i++ {
+    go func() {
+      counter++
+    }()
+  }
+  fmt.Println(counter)
+}
+
+++++++++++
+ Задача 9
+++++++++++
+1. Что выведется и как исправить?
+2. Что поправить, чтобы сохранить порядок?
+
+func main() {
+  m := make(char string, 3)
+  cnt := 5
+  for i := 0; i < cnt; i++ {
+    go func() {
+      m <- fmt.Sprintf("Goroutine %d", i)
+    }()
+  }
+  for i := 0; i < cnt; i++ {
+    go ReceiveFromCh(m)
+  }
+}
+func ReceiveFromCh(ch chan string) {
+  fmt.Println(<-ch)
+}
+
++++++++++++
+ Задача 10
++++++++++++
+1. Merge n channels
+2. Если один из входных каналов закрывается, то нужно закрыть все остальные каналы
+
+func case3(channels ...chan int) chan int {
+}
+
++++++++++++
+ Задача 11
++++++++++++
+1. Описать словами. Предположим есть метод REST API. В нем мы хотим сделать 10 запросов к другим API. Нужно считать данные  и отправить пользователю. Как это сделать? Как добавить таймаут? Стоит ли использовать каналы или можно WaitGroup?
+
++++++++++++
+ Задача 12
++++++++++++
+1. Конурентно по батчам запросить данные и записать в файл. Нужна общая конструкция, функции которые делают запрос к сайту и выгрузку в файл можно не реализовывать. 
+2. Сделать так, чтобы одновременно выполнялось не более chunkSize запросов. 
+
+package main
+const url = `http://jsonplaceholder.typicode.com/tools/%d`
+const chunkSize = 100
+const dataCount = 2 << 10
+
++++++++++++
+ Задача 13
++++++++++++
+1. Запросить параллельно данные из источников. Если все где-то произошла ошибка, то вернуть ошибку, иначе вернуть nil.
+2. Представим, что теперь функция должна возвращать результат int. Есть функция resp.Size(), для каждого url надо проссумировать и вернуть, если ошибок не было. Просто описать подход к решению
+3. Что делать, если урлов у нас миллионы?
+
+package main
+
+func main() {
+    _, err := download([]string{
+        "https://example.com/e25e26d3-6aa3-4d79-9ab4-fc9b71103a8c.xml",
+        "https://example.com/a601590e-31c1-424a-8ccc-decf5b35c0f6.xml",
+        "https://example.com/1cf0dd69-a3e5-4682-84e3-dfe22ca771f4.xml",
+        "https://example.com/ceb566f2-a234-4cb8-9466-4a26f1363aa8.xml",
+        "https://example.com/b6ed16d7-cb3d-4cba-b81a-01a789d3a914.xml",
+    })
+
+    if err != nil {
+        panic(err)
+    }
+}
+
+func download(urls []string) (error) {
+    return nil
+}
+
+
++++++++++++
+ Задача 14
++++++++++++
+1. Что выведет на экран и сколько времени будет работать?
+2. Нужно ускорить, чтобы работало быстрее. Сколько будет работать теперь?
+3. Если бы в networkRequest выполнялся реальный сетевой вызов, то какие с какими проблемами мы могли бы столкнуться в данном коде?
+4. Если url немного, а запросов к ним много, то как можно оптимизировать?
+
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+const numRequests = 10000
+
+var count int
+
+var m sync.Mutex
+
+func networkRequest() {
+    time.Sleep(time.Millisecond) // Эмуляция сетевого запроса.
+    m.Lock()
+    count++
+    m.Unlock()
+}
+
+func main() {
+    var wg sync.WaitGroup
+
+    wg.Add(numRequests)
+    for i := 0; i < numRequests; i++ {
+        go func() {
+            defer wg.Done()
+            networkRequest()
+        }()
+    }
+
+    wg.Wait()
+    fmt.Println(count)
+}
+
++++++++++++
+ Задача 15
++++++++++++
+
+// Есть функция unpredictableFunc, работающая неопределенно долго и возвращающая число.
+// Её тело нельзя изменять (представим, что внутри сетевой запрос).
+
+// Нужно написать обертку predictableFunc, 
+// которая будет работать с заданным фиксированным таймаутом (например, 1 секунду).
+
+package main
+
+import (
+    "fmt"
+    "math/rand"
+    "time"
+)
+
+func init() {
+    rand.Seed(time.Now().UnixNano())
+}
+
+// Есть функция, работающая неопределенно долго и возвращающая число.
+// Её тело нельзя изменять (представим, что внутри сетевой запрос).
+func unpredictableFunc() int64 {
+    rnd := rand.Int63n(5000)
+    time.Sleep(time.Duration(rnd) * time.Millisecond)
+
+    return rnd
+}
+
+// Нужно изменить функцию обертку, которая будет работать с заданным таймаутом (например, 1 секунду).
+// Если "длинная" функция отработала за это время - отлично, возвращаем результат.
+// Если нет - возвращаем ошибку. Результат работы в этом случае нам не важен.
+//
+// Дополнительно нужно измерить, сколько выполнялась эта функция (просто вывести в лог).
+// Сигнатуру функцию обёртки менять можно.
+func predictableFunc() int64 {
+}
+
+func main() {
+    fmt.Println("started")
+
+    fmt.Println(predictableFunc())
+}
+
++++++++++++
+ Задача 16
++++++++++++
+
+// Написать код функции, которая делает merge N каналов. Весь входной поток перенаправляется в один канал.
+
+func merge(cs ...<-chan int) <-chan int {
+}
+
++++++++++++
+ Задача 17
++++++++++++
+1. Что выведется? Исправь проблему
+
+# Вариант1
+----------
+x := make(map[int]int, 1)
+go func() { x[1] = 2 }()
+go func() { x[1] = 7 }()
+go func() { x[1] = 10 }()
+time.Sleep(100 * time.Millisecond)
+fmt.Println("x[1] =", x[1])
+
++++++++++++
+ Задача 18
++++++++++++
+1. Иногда приходят нули. В чем проблема? Исправь ее
+2. Если функция bank_network_call выполняется 5 секунд, то за сколько выполнится balance()? Как исправить проблему?
+3. Представим, что bank_network_call возвращает ошибку дополнительно. Если хотя бы один вызов завершился с ошибкой, то balance должен вернуть ошибку.
+
+func balance() int {
+    x := make(map[int]int, 1)
+    var m sync.Mutex
+ 
+    // call bank
+    for i := 0; i < 5; i++ {
+        i := i
+        go func() {
+	    m.Lock()
+            b := bank_network_call(i)
+        
+            x[i] = b
+            m.Unlock()
+        }()
+    }
+
+    // Как-то считается сумма значений в мапе и возвращается
+    return sumOfMap
+}
+
+
+
+==========================
+====    Интерфейсы    ====
+==========================
+
+++++++++++
+ Задача 1
+++++++++++
+Что выведет код?
+
+type impl struct{}
+
+type I interface {
+	C()
+}
+
+func (*impl) C() {}
+
+func A() I {
+	return nil
+
+}
+func B() I {
+	var ret *impl
+	return ret
+}
+
+func main() {
+	a := A()
+	b := B()
+	fmt.Println(a == b)
+}
+
+++++++++++
+ Задача 2
+++++++++++
+1. Добавить код, который выведет тип переменной whoami
+
+func printType(whoami interface{}) {
+}
+
+func main() {
+  printType(42)
+  printType("im string")
+  printType(true)
+}
+
+++++++++++
+ Задача 3
+++++++++++
+Исправить функцию, чтобы она работала. Сигнатуру менять нельзя
+
+func printNumber(ptrToNumber interface{}) {
+        if ptrToNumber != nil {
+                fmt.Println(*ptrToNumber.(*int))
+        } else {
+                fmt.Println("nil")
+        }
+}
+
+func main() {
+        v := 10
+        printNumber(&v)
+        var pv *int
+        printNumber(pv)
+        pv = &v
+        printNumber(pv)
+}
+
+==========================
+====    Разные темы   ====
+==========================
+
+++++++++++
+ Задача 1
+++++++++++
+1. Что выведется?
+
+package main
+
+import (
+  "fmt"
+  "math"
+)
+
+func main() {
+  x := 2.0
+  y := 3.0
+
+  result := math.Pow(x, y)
+
+  fmt.Println("%f ^ %f = %f\n", x, y, result)
+}
+
+++++++++++
+ Задача 2
+++++++++++
+1. Что выведет код?
+
+func main() {
+  fmt.Println("start")
+  for i := 1; i < 4; i++ {
+    defer fmt.Println(i)
+  }
+  fmt.Println("end")
+}
+
+++++++++++
+ Задача 3
+++++++++++
+1. Что будет в результате выполнения теста?
+
+type User struct {
+  Valid bool
+  Id int64
+  Number int32
+}
+type CUser struct {
+  Id int64
+  Number int32
+  Valid bool
+}
+func TestSize(t *testing.T) {
+  user := User{}
+  cuser := CUser{}
+  if unsafe.Sizeof(user) == unsafe.Sizeof(cuser) {
+    t.Log("structs size are equal")
+  }
+}
+
+++++++++++
+ Задача 4
+++++++++++
+1. Какие строки работают нормально, а какие нет и почему?
+
+package main
+
+type T []int
+func (T) X(){}
+func (*T) Z(){}
+
+func main() {
+    var t T
+    t.X() // 1
+    t.Z() // 2
+    var p = &t
+    p.X() // 3
+    p.Z() // 4
+    T{}.X() // 5
+    T{}.Z() // 6
+}
+
+++++++++++
+ Задача 5
+++++++++++
+1. Расскажи подробно что происходит
+2. Как сделать так, чтобы работало?
+
+package main
+
+import "fmt"
+
+func main() {
+    str := "Привет"
+    str[2] = 'e'
+    fmt.Println(str)
+}
+
+
+==========================
+====    Кастомные     ====
+==========================
+
+++++++++++
+ Задача 1
+++++++++++
+1. Написать функцию, которая принимает число N и возвращает слайс размера N с уникальными числами.
+2. Идеи как тестировать функцию?
+
+
+++++++++++
+ Задача 2
+++++++++++
+1. Нужно написать функцию генератор паролей, которая принимает целое число n, а на выходе строка длины n из букв a-zA-Z и 0-9
+2. Что тут можно улучшить?
+3. Какие тесты ты бы написал для нее? Есть какая-нибудь возможность угадать, какая строка будет генерироваться, чтобы писать тесты?
+
+++++++++++
+ Задача 3
+++++++++++
+Написать функцию, которая устанавливает i-ый бит числа в 0
+
+
+++++++++++
+ Задача 4
+++++++++++
+
+package main
+ 
+type Data struct {
+    ID int
+    Payload map[string]interface{}
+}
+ 
+type Reader interface{
+    Read() []*Data
+}
+ 
+type Processor interface{
+    Process(Data) ([]*Data, error)
+}
+ 
+type Writer interface{
+    Write([]*Data)
+}
+ 
+type Manager interface{
+    Manage() // blocking
+}
+ 
+// Необходимо имплементировать интерфейс Manager так, чтобы Manager мог принимать данные из одного Reader
+// обрабатывать полученные данные на каждом из списка Processor и результирующие данные передавать в Writer.
+// При возникновении ошибки при обработке, прочитанные из Reader данные необходимо пропустить.
+
+++++++++++
+ Задача 5
+++++++++++
+1. Релизовать ручку так, чтобы она выполнялась быстрее чем за одну секунду
+2. Теперь допустим, что запрашивается температура в каком-то location_id. Опиши, как это реализовать. 
+
+// Есть функция getWeather, которая через нейронную сеть вычисляет температуру за ~1 секунду
+// Есть highload ручка /weather/highload с нагрузкой 3k RPS
+// Необходимо реализовать код этой ручки
+
+func getWeather() int {
+    time.Sleep(1 * time.Second)
+    return rand.Intn(70) - 30
+}
+
+func main() {
+    http.HandleFunc("/weather/highload", func(resp http.ResponseWriter, req *http.Request) {
+
+
+    })
+}
+
+++++++++++
+ Задача 6
+++++++++++
+1. Реализовать кеш. Для простоты считаем, что у нас бесконечная память и нам не нужно задумываться об удалении ключей из него.
+	1. Почему использовал RWMutex, а не Mutex?
+2. Теперь представим что память не бесконечная. С какими проблемами столкнемся и как их решить?
+	1. Какие есть алгоритмы выселения?
+3. Реализуй LRU
+
+// In-memory cache
+// Нужно написать простую библиотеку in-memory cache.
+// Реализация должна удовлетворять интерфейсу:
+
+type Cache interface {
+    Set(k, v string)
+    Get(k string) (v string, ok bool)
+}
+
+
+=====================
+====    Ревью    ====
+=====================
+
+++++++++++
+ Задача 1
+++++++++++
+Ревью кода (github.com/nosuchpersonn/interview_project)
+
+
+++++++++++
+ Задача 2
+++++++++++
+Ревью кода (github.com/nosuchpersonn/some_app)
+
+
+++++++++++
+ Задача 3
+++++++++++
+Ревью кода (github.com/nosuchpersonn/some_app_2)

@@ -1,0 +1,63 @@
+Интерфейсы
+
+==========================================
+Задача 1
+Что выведет код?
+==========================================
+
+type impl struct{}
+
+type I interface {
+	C()
+}
+
+func (*impl) C() {}
+
+func A() I {
+	return nil
+
+}
+func B() I {
+	var ret *impl
+	return ret
+}
+
+func main() {
+	a := A()
+	b := B()
+	fmt.Println(a == b)
+}
+
+===========================================================
+Задача 2
+1. Добавить код, который выведет тип переменной whoami
+===========================================================
+func printType(whoami interface{}) {
+}
+
+func main() {
+  printType(42)
+  printType("im string")
+  printType(true)
+}
+
+===========================================================
+Задача 3
+Исправить функцию, чтобы она работала. Сигнатуру менять нельзя
+===========================================================
+func printNumber(ptrToNumber interface{}) {
+        if ptrToNumber != nil {
+                fmt.Println(*ptrToNumber.(*int))
+        } else {
+                fmt.Println("nil")
+        }
+}
+
+func main() {
+        v := 10
+        printNumber(&v)
+        var pv *int
+        printNumber(pv)
+        pv = &v
+        printNumber(pv)
+}

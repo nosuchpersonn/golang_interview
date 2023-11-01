@@ -1,0 +1,217 @@
+Слайсы, Мапы
+
+==========================================
+Задача 1
+Что выведет код?
+==========================================
+
+func main() {
+	v := []int{3, 4, 1, 2, 5}
+	ap(v)
+	sr(v)
+	fmt.Println(v)
+}
+
+func ap(arr []int) {
+	arr = append(arr, 10)
+}
+
+func sr(arr []int) {
+	sort.Ints(arr)
+}
+
+==========================================
+Задача 2
+1. Что выведет код?
+==========================================
+
+var foo []int
+var bar []int
+
+foo = append(foo, 1)
+foo = append(foo, 2)
+foo = append(foo, 3)
+bar = append(foo, 4)
+foo = append(foo, 5)
+
+fmt.Println(foo, bar)
+
+
+===========================================================
+Задача 3
+1. Что выведется?
+===========================================================
+package main
+import "fmt"
+func main() {
+  c := []string{"A", "B", "D", "E"}
+  b := c[1:2]
+  b = append(b, "TT")
+  fmt.Println(c)
+  fmt.Println(b)
+}
+
+===========================================================
+Задача 4
+1. Что выведет код?
+===========================================================
+
+func main() {
+  var m map[string]int
+  for _, word := range []string{"hello", "world", "from", "the",
+    "best", "language", "in", "the", "world"} {
+    m[word]++
+  }
+  for k, v := range m {
+    fmt.Println(k, v)
+  }
+}
+
+===========================================================
+Задача 5
+1. Что будет в результате выполнения?
+===========================================================
+
+mutate := func(a []int) {
+  a[0] = 0
+  a = append(a, 1)
+  fmt.Println(a)
+}
+a := []int{1, 2, 3, 4}
+mutate(a)
+fmt.Println(a)
+
+===========================================================
+Задача 6
+1. Что выведется?
+2. Зная обо всех таких нюансах, которые могут возникнуть, какие есть рекомендации?
+===========================================================
+
+# Вариант 1
+-----------
+func mod(a []int) {
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := []int{1, 2, 3, 5}
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 2
+-----------
+func mod(a []int) {
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := make([]int, 4, 8)
+  sl[0] = 1
+  sl[1] = 2
+  sl[2] = 3
+  sl[3] = 5
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 3
+-----------
+func mod(a []int) {
+  a = append(a, 125)
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := make([]int, 4, 8)
+  sl[0] = 1
+  sl[1] = 2
+  sl[2] = 3
+  sl[3] = 5
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 4
+-----------
+func mod(a []int) {
+  a = append(a, 125)
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := []int{1, 2, 3, 4, 5}
+  mod(sl)
+  fmt.Println(sl)
+}
+
+===========================================================
+Задача 7
+1. Что будет содержать s после инициализации?
+2. Что произойдет в println для слайса и для мапы?
+===========================================================
+func a(s []int) {
+    s = append(s, 37)
+}
+
+func b(m map[int]int) {
+    m[3] = 33
+}
+
+func main() {
+    s := make([]int, 3, 8)
+    m := make(map[int]int, 8)
+
+    // add to slice
+    a(s)
+    println(s[3]) //?
+
+    // add to map
+    b(m)
+    println(m[3]) //?
+}
+
+===========================================================
+Задача 8
+1. Расскажи подробно что происходит
+===========================================================
+# Вариант 1
+-----------
+package main
+
+import "fmt"
+
+func main() {
+    a := []int{1,2}
+    a = append(a, 3)
+    b := append(a, 4)
+    c := append(a, 5)
+
+    fmt.Println(b)
+    fmt.Println(c)
+}
+
+# Вариант 2
+-----------
+package main
+
+import "fmt"
+
+func main() {
+    a := []int{1,2}
+    a = append(a, 3)
+    a = append(a, 7)
+    b := append(a, 4)
+    c := append(a, 5)
+
+    fmt.Println(b)
+    fmt.Println(c)
+}

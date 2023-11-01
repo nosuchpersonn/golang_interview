@@ -1,0 +1,108 @@
+===========================================================
+Задача 1
+1. Что выведется?
+2. Зная обо всех таких нюансах, которые могут возникнуть, какие есть рекомендации?
+===========================================================
+
+# Вариант 1
+-----------
+func mod(a []int) {
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := []int{1, 2, 3, 5}
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 2
+-----------
+func mod(a []int) {
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := make([]int, 4, 8)
+  sl[0] = 1
+  sl[1] = 2
+  sl[2] = 3
+  sl[3] = 5
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 3
+-----------
+func mod(a []int) {
+  a = append(a, 125)
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := make([]int, 4, 8)
+  sl[0] = 1
+  sl[1] = 2
+  sl[2] = 3
+  sl[3] = 5
+  mod(sl)
+  fmt.Println(sl)
+}
+
+# Вариант 4
+-----------
+func mod(a []int) {
+  a = append(a, 125)
+  for i := range a {
+    a[i] = 5
+  }
+  fmt.Println(a)
+}
+func main() {
+  sl := []int{1, 2, 3, 4, 5}
+  mod(sl)
+  fmt.Println(sl)
+}
+
+===========================================================
+Задача 2
+1. Что выведется и как исправить?
+===========================================================
+
+func main() {
+  var counter int
+  for i := 0; i < 1000; i++ {
+    go func() {
+      counter++
+    }()
+  }
+  fmt.Println(counter)
+}
+
+===========================================================
+Задача 3
+1. Что выведется и как исправить?
+2. Что поправить, чтобы сохранить порядок?
+===========================================================
+
+func main() {
+  m := make(char string, 3)
+  cnt := 5
+  for i := 0; i < cnt; i++ {
+    go func() {
+      m <- fmt.Sprintf("Goroutine %d", i)
+    }()
+  }
+  for i := 0; i < cnt; i++ {
+    go ReceiveFromCh(m)
+  }
+}
+func ReceiveFromCh(ch chan string) {
+  fmt.Println(<-ch)
+}

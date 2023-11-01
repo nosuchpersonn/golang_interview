@@ -1,0 +1,58 @@
+===========================================================
+Задача 1
+1. Что будет в результате выполнения?
+===========================================================
+
+mutate := func(a []int) {
+  a[0] = 0
+  a = append(a, 1)
+  fmt.Println(a)
+}
+a := []int{1, 2, 3, 4}
+mutate(a)
+fmt.Println(a)
+
+===========================================================
+Задача 2
+1. Что будет в результате выполнения теста?
+===========================================================
+
+type MyError struct{}
+func (e *MyError) Error() string {
+  return "my error"
+}
+func CheckError(err error) {
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println("ok")
+}
+func TestCollect(t *testing.T) {
+  var err *MyError
+  CheckError(err)
+}
+
+===========================================================
+Задача 3
+1. Что будет в результате выполнения теста?
+===========================================================
+
+type User struct {
+  Valid bool
+  Id int64
+  Number int32
+}
+type CUser struct {
+  Id int64
+  Number int32
+  Valid bool
+}
+func TestSize(t *testing.T) {
+  user := User{}
+  cuser := CUser{}
+  if unsafe.Sizeof(user) == unsafe.Sizeof(cuser) {
+    t.Log("structs size are equal")
+  }
+}
+
+
