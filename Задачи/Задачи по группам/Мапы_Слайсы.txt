@@ -215,3 +215,17 @@ func main() {
     fmt.Println(b)
     fmt.Println(c)
 }
+
+===========================================================
+Задача 9
+Что выведет код и почему?
+===========================================================
+func main() {
+	foo := make([]int, 0, 4)
+	foo = append(foo, 1, 2, 3)
+	bar := append(foo, 4)
+	baz := append(foo, 5)
+
+	fmt.Println(bar)
+	fmt.Println(baz)
+}
